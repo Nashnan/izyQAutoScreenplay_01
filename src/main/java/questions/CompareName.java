@@ -5,9 +5,9 @@ import net.serenitybdd.screenplay.Question;
 import net.serenitybdd.screenplay.questions.Text;
 import userinterfaces.LoginPage;
 
-public class CompareName implements Question {
+public class CompareName implements Question<String> {
     @Override
-    public Object answeredBy(Actor actor) {
+    public String answeredBy(Actor actor) {
         return Text.of(LoginPage.Compare).viewedBy(actor).asString();
     }
 

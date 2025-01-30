@@ -1,9 +1,11 @@
-package stepsDefinitions;
+package stepsdefinitions;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import exceptions.MessageException;
+import models.Credentials;
 import net.serenitybdd.screenplay.GivenWhenThen;
 import net.serenitybdd.screenplay.abilities.BrowseTheWeb;
 import net.serenitybdd.screenplay.actions.Open;
@@ -14,6 +16,9 @@ import org.hamcrest.Matchers;
 import org.openqa.selenium.WebDriver;
 import questions.CompareName;
 import tasks.LoginTask;
+import utils.Constants;
+
+import java.util.List;
 
 public class LoginStepsDefinitions {
 
@@ -33,13 +38,16 @@ public class LoginStepsDefinitions {
     }
 
     @When("^The user enters the credentials$")
-    public void theUserEntersTheCredentials() {
-        OnStage.theActorInTheSpotlight().attemptsTo(LoginTask.enterCredentials());
+    public void theUserEntersTheCredentials(List<Credentials> credentialsList) {
+        Credentials credentials;
+        credentials = credentialsList.get(0);
+        OnStage.theActorInTheSpotlight().attemptsTo(LoginTask.enterCredentials(credentials));
     }
 
     @Then("^The user can see his name$")
     public void theUserCanSeeHisName() {
-        OnStage.theActorInTheSpotlight().should(GivenWhenThen.seeThat(CompareName.compare() ,
-                Matchers.is("nramos $ 0")));
+        OnStage.theActorInTheSpotlight().should(GivenWhenThen.seeThat(CompareName.compare(),
+                        Matchers.is(Constants.NAME_COMPARATIONS))
+                .orComplainWith(MessageException.class, Constants.MESSAGE_EXCEPTION));
     }
 }
