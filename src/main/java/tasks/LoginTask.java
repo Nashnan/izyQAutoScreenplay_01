@@ -1,5 +1,6 @@
 package tasks;
 
+import interactions.WaitElement;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.Tasks;
@@ -13,12 +14,8 @@ public class LoginTask implements Task {
         actor.attemptsTo(Enter.theValue("nramos@qvision.us").into(LoginPage.TXT_USERNAME));
         actor.attemptsTo(Enter.theValue("123456789").into(LoginPage.TXT_PASSWORD));
         actor.attemptsTo(Click.on(LoginPage.BTN_LOGIN));
+        actor.attemptsTo(WaitElement.untilBeEnable(LoginPage.BTN_USER));
         actor.attemptsTo(Click.on(LoginPage.BTN_USER));
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static LoginTask enterCredentials(){
